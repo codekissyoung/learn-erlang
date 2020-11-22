@@ -17,4 +17,5 @@ loop(Dir) ->
       Client ! {self(), file:read_file(Full)}
 
   end,
+
 loop(Dir).
