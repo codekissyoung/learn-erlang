@@ -3,17 +3,13 @@
 -export([area/1,test/0]).
 
 % 传一个元组进来，匹配上了，就执行计算面积的代码
-area({rectangle,Width,Height}) ->
-  Width * Height;
-
-area({circle,Radius})->
-  3.14159 * Radius * Radius;
-
-area({square,Side}) ->
-  Side * Side.
+area({rectangle,Width,Height}) -> Width * Height;
+area({circle,Radius})-> 3.14159 * Radius * Radius;
+area({square,Side}) -> Side * Side.
 
 test() ->
   12 = area({rectangle,3,4}),
+  _ = area({circle,10}),
   144 = area({square,12}),
   tests_worked.
 
