@@ -5,7 +5,10 @@
 % 传一个元组进来，匹配上了，就执行计算面积的代码
 area({rectangle,Width,Height}) -> Width * Height;
 area({circle,Radius})-> 3.14159 * Radius * Radius;
-area({square,Side}) -> Side * Side.
+area({square,Side}) -> Side * Side;
+area({triangle, A, B, C}) ->
+  S = (A + B + C) / 2,
+  math:sqrt(S * (S-A) * (S-B) * (S-C) ).
 
 test() ->
   12 = area({rectangle,3,4}),
