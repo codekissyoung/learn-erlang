@@ -6,6 +6,7 @@
 
 start() ->
   begin
+    X = 129 + 100,
     io:format("hello \t"), % 直接调用模块
     fwrite("world \n")     % import 引入别的模块函数
   end.
