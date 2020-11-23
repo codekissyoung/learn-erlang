@@ -26,5 +26,4 @@ sum([H|T])
   -> H + sum(T).
 
 map(_, []) -> [];
-map(F, [H|T])
-  -> [F(H) | map(F, T)].
+map(F, [H|T]) -> [F(H) | map(F, T)].
