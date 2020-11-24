@@ -1,14 +1,11 @@
 -module(hello).
 -author("cky").
 -import(io, [fwrite/1]).
--export([start/0,factories/1,classify_day/1,reverse/1,flat_length/1,factories_p/1,main/1]).
-
-main(_) ->
-  io:format("hello world").
+-export([start/0,factories/1,classify_day/1,reverse/1,flat_length/1,factories_p/1]).
 
 start() ->
   begin
-    X = 129 + 100,
+    129 + 100,
     io:format("hello \t"), % 直接调用模块
     fwrite("world \n")     % import 引入别的模块函数
   end.
@@ -23,9 +20,9 @@ factories_p(N)    % 子句头部
     1;            % 函数表达式
 factories_p(N)
   when N > 0 ->
-%%  写成一行的表达式
-%%  N * factories_p(N - 1).
-  %% 拆开写成表达式序列，用 , 隔开，最终的值为　最后一个表达式的值
+%% 写成一行的表达式
+%% N * factories_p(N - 1).
+%% 拆开写成表达式序列，用 , 隔开，最终的值为　最后一个表达式的值
     N1 = N -1,
     F1 = factories_p(N1),
     N * F1.
