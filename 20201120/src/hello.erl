@@ -1,7 +1,10 @@
 -module(hello).
 -author("cky").
 -import(io, [fwrite/1]).
--export([start/0,factories/1,classify_day/1,reverse/1,flat_length/1,factories_p/1]).
+-export([start/0,factories/1,classify_day/1,reverse/1,flat_length/1,factories_p/1,main/1]).
+
+main(_) ->
+  io:format("hello world").
 
 start() ->
   begin
@@ -34,16 +37,13 @@ classify_day(_)        -> weekDay. % _ 是精髓
 
 reverse(L) ->
   reverse(L, []).
-
 reverse([H|T], L) ->
   reverse(T, [H|L]);
 reverse([], L) ->
   L.
 
-
 flat_length(List) ->
   flat_length(List, 0).
-
 flat_length([H|T], N) when is_list(H) ->
   flat_length(H, flat_length(T, N));
 flat_length([H|T], N) ->
