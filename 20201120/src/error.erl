@@ -5,27 +5,35 @@
 generate_exception(1) -> a;
 
 % 抛出一个异常
+% 没有让进程崩溃的意思，只是为了改变控制流(非局部返回)，并期望调用方去处理异常
 generate_exception(2) -> throw(a);
 
 % 终止当前进程时使用，如果未捕捉，则会广播　{'EXIT', Pid, Why} 到其他链接到本进程的其他进程
+% 不会返回Stack
 generate_exception(3) -> exit(a);
 generate_exception(4) -> {'EXIT', a};
 
-% 崩溃性错误
+% 崩溃性错误,会结束当前进程，会返回 Stack
 generate_exception(5) -> error(a).
 
+% throw exit error 都可以被捕获和处理
 catcher(N) ->
   % N 是入参 Ret 是表达式的返回值
-  try generate_exception(N) of Ret ->
-    {N, normal, Ret} % 如果表达式执行正常，未抛出异常
+  try % 中间可以写多个表达式
+    demo1(),
+    generate_exception(N)
+  of
+    Ret -> {N, normal, Ret} % 如果表达式执行正常，未抛出异常
   catch
-    throw:Ret -> % 抛出 throw 异常
-      {N, caught, thrown, Ret};
-    exit:Ret -> % 收到 exit 异常
-      {N, caught, exited, Ret};
-    error:Ret -> % 收到 error 异常
-      {N, caught, error, Ret}
+    throw:Ret -> {N, caught, thrown, Ret}; % 处理 throw 异常
+    exit:Ret -> {N, caught, exited, Ret};  % 处理 exit 异常
+    error:Ret -> {N, caught, error, Ret}   % 处理 error 异常
+  after % 一定会执行的子句，不返回任何值，常用来关闭打开的文件等操作
+    {N, always, exec }
   end.
+
+
+
 
 % 改进错误消息
 %%3> math:sqrt(-1).

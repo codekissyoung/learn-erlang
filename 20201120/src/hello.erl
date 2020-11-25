@@ -1,17 +1,45 @@
 -module(hello).
 -author("cky").
+-define(HOUR, 3600). % 3600 秒
 -import(io, [fwrite/1]).
--export([start/0,factories/1,classify_day/1,reverse/1,flat_length/1,factories_p/1]).
+-export([start/0, fac/1,classify_day/1,reverse/1,flat_length/1,factories_p/1]).
 
 start() ->
-  begin
-    io:format("hello \t"), % 直接调用模块
-    fwrite("world \n")     % import 引入别的模块函数
-  end.
+    X = 100 + ?HOUR,
+    io:format("hello " ),
+    fwrite("world \n"),    % import 引入别的模块函数
+    X.
 
-% 计算整数的阶乘
-factories(0) -> 1;
-factories(N) -> N * factories( N - 1 ).
+% 判断是否同一个变量
+same(X,X) -> true;
+same(_,_) -> false.
+
+% 实现尾递归的关键在于，始终保持在展开计算时
+% 始终只有一个函数　以及　计算好的 Accumulator 变量
+% 计算整数的阶乘　　　　　　　
+fac(0) -> 1;
+fac(N) -> N * fac( N - 1 ).
+
+% 尾递归优化的阶乘 Acc : Accumulator 累加器
+tail_fac(N)
+  -> tail_fac(N, 1).
+tail_fac(0, Acc)
+  -> Acc;
+tail_fac(N, Acc) when N > 0 ->
+  tail_fac(N-1, N*Acc).
+
+% 递归计算长度
+len([]) -> 0;
+len([_|T]) -> 1 + len(T).
+
+% 尾递归优化后的求长度
+tail_len(L) -> tail_len(L, 0).
+tail_len([], Acc) -> Acc;
+tail_len([_|T], Acc) -> tail_len(T, Acc+1).
+
+% 卫语句
+old_enough(X) when X >= 16, X =< 80 ->true;
+old_enough(_) -> false.
 
 % 使用保护式写法
 factories_p(N)    % 子句头部
