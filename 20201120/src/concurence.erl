@@ -13,3 +13,4 @@ dolphin() ->
       io:format("do nothing ~n"),
       dolphin()
   end.
+

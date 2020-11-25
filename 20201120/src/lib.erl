@@ -1,5 +1,5 @@
 -module(lib).
--export([for/3, qsort/1, demo/0, pythag/1, perms/1, odds_and_evens/1, max/2, filter/2,count_characters/1]).
+-export([for/3, qsort/1, demo/0, pythag/1, perms/1, odds_and_evens/1, max/2, filter/2]).
 
 for(Max, Max, F) -> % 这句一定要在前面，是终止条件
   [ F(Max) ];
@@ -38,16 +38,16 @@ perms(L) ->
 % 增强函数匹配，而设计的 关卡 功能，通过 when 在函数开头调用 光卡
 max(X,Y) when X > Y
   -> X;
-max(X,Y)
+max(_, Y)
   -> Y.
 
 % case 表达式实现 filter
-filter(F, [H|T] ) ->
+filter(F, [H|T] ) when is_function(F) ->
   case F(H) of
     true -> [H|filter(F,T)];
     false -> filter(F,T)
   end;
-filter(F,[]) -> [].
+filter(F,[]) when is_function(F) -> [].
 
 % 归集器
 odds_and_evens(L) ->
@@ -62,13 +62,10 @@ odds_and_evens_acc([], Odds, Evens) ->
   {lists:reverse(Odds), lists:reverse(Evens)}.
 
 % 返回一个 Map , 内含某个字符串里各个字符的出现次数
-count_characters(Str) ->
-  count_characters(Str, #{}).
-count_characters([H|T], #{ H => N} = X ) ->
-  count_characters(T, X#{H := N+1 });
-count_characters([H|T], X) ->
-  count_characters(T, X#{H=>1});
-count_characters([], X) -> X.
+%%count_characters(Str) -> count_characters(Str, #{}).
+%%count_characters([H|T], #{ H => N} = X ) -> count_characters(T, X#{H := N+1 });
+%%count_characters([H|T], X) -> count_characters(T, X#{H=>1});
+%%count_characters([], X) -> X.
 
 demo() ->
   qsort([23,12,34,1,234,45,89,12]).
