@@ -5,7 +5,6 @@
 
 start() ->
   begin
-    129 + 100,
     io:format("hello \t"), % 直接调用模块
     fwrite("world \n")     % import 引入别的模块函数
   end.
@@ -43,7 +42,7 @@ flat_length(List) ->
   flat_length(List, 0).
 flat_length([H|T], N) when is_list(H) ->
   flat_length(H, flat_length(T, N));
-flat_length([H|T], N) ->
+flat_length([_|T], N) ->
   flat_length(T, N + 1);
 flat_length([], N) ->
   N.
