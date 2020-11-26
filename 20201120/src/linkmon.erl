@@ -1,16 +1,19 @@
 -module(linkmon).
 -author("cky").
--export([chain/1]).
+-export([chain/1, myproc/0]).
+
+myproc() ->
+  timer:sleep(5000),
+  throw({no_reason}).
 
 chain(0) ->
   receive
     _ -> ok
   after 2000 ->
-    exit("chain dies here")
+    throw("chain dies here")
   end;
 chain(N) ->
-  Pid = spawn( fun() -> chain(N - 1) end ),
-  link(Pid),
+  link(spawn( fun() -> chain(N - 1) end )),
   receive
     _ -> ok
   end.

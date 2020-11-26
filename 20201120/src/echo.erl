@@ -2,15 +2,13 @@
 -author("cky").
 -export([start/0, loop/0]).
 
-start() ->
-  spawn( echo , loop, []).
+start() -> spawn(?MODULE , loop, []).
 
 loop() ->
   receive
-    {From, Message} ->
-      From ! {Message, "Who are you ?"},
-      loop()
-  end.
+    {From, Message} -> From ! {Message, "Who are you ?"}
+  end,
+loop().
 
 %%Eshell V9.2  (abort with ^G)
 %%1> c("echo.erl").

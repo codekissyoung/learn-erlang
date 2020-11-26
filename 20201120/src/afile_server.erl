@@ -7,9 +7,7 @@ start(Dir) ->
 
 % 无限循环
 loop(Dir) ->
-
   receive % 等待指令
-
     % 收到 {Client, list_dir} 信息, 就回复一个文件列表
     % Client 在运行时,实际是发消息的客户进程 Pid
     % Self() 在运行时,实际是当前进程的 Pid
@@ -20,9 +18,7 @@ loop(Dir) ->
     {Client, {get_file, File}} ->
       Full = filename:join(Dir, File),
       Client ! {self(), file:read_file(Full)}
-
   end,
-
 loop(Dir).
 
 %% erl
@@ -41,4 +37,3 @@ loop(Dir).
 %%{<0.85.0>,
 %%{ok,["run.sh","afile_client.erl","hello.erl",
 %%"afile_server.erl","afile_server.beam"]}}
-
