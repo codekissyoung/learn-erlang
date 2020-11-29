@@ -2,62 +2,37 @@
 -author("cky").
 -compile([debug_info, export_all]). % 编译选项: 加入调试信息，导出全部函数
 
-myproc() ->
-  timer:sleep(5000),
-  exit(no_reason).
-
-chain(0) ->
+% 给 Client 调用的
+send(X) ->
+  Ref = make_ref(),
+  critic ! {self(), Ref, {X}},
   receive
-    _ -> ok
-  after 3000 ->
-    exit("chain dies here")
-  end;
-chain(N) ->
-  spawn_link( fun() -> chain(N - 1) end ),
-  receive
-    _ -> ok
-  end.
-
-judge(Pid ,Band) ->
-  Pid ! {self(), {Band}},
-  receive
-    {Pid, Criticism}
-      -> Criticism
+    {Ref, Y} -> Y
   after 2000 ->
     timeout
   end.
 
-start_critic() ->
-  spawn(?MODULE, critic, []).
-
-start_critic2() ->
+% 启动一个服务进程
+start() ->
   spawn(?MODULE, protect_critic, []).
 
-judge2(X) ->
-  critic ! {self(),X},
-  Pid = whereis(critic),
-  receive
-    {Pid, Y} -> Y
-  after 2000 ->
-    timeout
-  end.
-
+% critic 的保护进程
 protect_critic() ->
-  process_flag(trap_exit, true),
+  process_flag(trap_exit, true),                  % 系统进程
   Pid = spawn_link(?MODULE, critic, []),
-  register(critic, Pid),                  % 给进程命名, 挂到注册树上
+  register(critic, Pid),                          % 给进程命名, 挂到注册树上
   receive
-    {'EXIT', Pid, normal} -> ok;          % exit normal
-    {'EXIT', Pid, shutdown} -> ok;        % exit by hand
-    {'EXIT', Pid, _} -> protect_critic()  % restart it
+    {'EXIT', Pid, normal}     -> ok;              % exit normal
+    {'EXIT', Pid, shutdown}   -> ok;              % exit by hand
+    {'EXIT', Pid, _}          -> protect_critic() % restart it
   end.
 
+% critic 进程
 critic() ->
   receive
-    {From, {"a"}}           -> From ! {self(),"A"};
-    {From, {"b"}}           -> From ! {self(),"B"};
-    {From, {X}}             -> From ! {self(),X}, X;
-    {From, {_Band, _Album}} -> From ! {self(),_Band, _Album}
+    {From, Ref, {"a"}}           -> From ! {Ref, "A"};
+    {From, Ref, {"b"}}           -> From ! {Ref, "B"};
+    {From, Ref, {X}}             -> From ! {Ref, X};
+    {From, Ref, _}               -> From ! {Ref, unkown}
   end,
   critic().
-

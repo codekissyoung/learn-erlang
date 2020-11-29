@@ -3,7 +3,7 @@
 all : $(patsubst %.erl, %.beam, $(wildcard *.erl))
 
 %.beam : %.erl
-	erlc -d -W $<
+	erlc -W $<
 
 .PHONY : clean
 clean:
