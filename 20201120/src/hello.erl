@@ -2,17 +2,13 @@
 -author("cky").
 -define(HOUR, 3600). % 3600 秒
 -import(io, [fwrite/1]).
--export([start/0, fac/1,classify_day/1,reverse/1,flat_length/1,factories_p/1]).
+-compile(export_all).
 
 start() ->
     X = 100 + ?HOUR,
     io:format("hello " ),
     fwrite("world \n"),    % import 引入别的模块函数
     X.
-
-% 判断是否同一个变量
-same(X,X) -> true;
-same(_,_) -> false.
 
 % 实现尾递归的关键在于，始终保持在展开计算时
 % 始终只有一个函数　以及　计算好的 Accumulator 变量
