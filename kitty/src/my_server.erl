@@ -1,6 +1,12 @@
 -module(my_server).
 -compile(export_all).
 
+
+% my_server 待解决的问题：
+% 进程命名 超时配置　调试信息　非期望消息处理　代码热加载　特殊错误的处理
+% 公共回复代码的提炼　服务器关闭的处理
+% 保证服务器和监督者的配合
+
 start(Module, InitState) ->
   spawn(fun() -> init(Module, InitState) end ).
 
