@@ -21,4 +21,3 @@ dont_give_carp() ->
   end,
   io:format("Switching to 'dont_give_crap' state~n"),
   dont_give_carp().
-
