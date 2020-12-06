@@ -33,7 +33,6 @@ tail_len(L) -> tail_len(L, 0).
 tail_len([], Acc) -> Acc;
 tail_len([_|T], Acc) -> tail_len(T, Acc+1).
 
-% 卫语句
 old_enough(X) when X >= 16, X =< 80 ->true;
 old_enough(_) -> false.
 

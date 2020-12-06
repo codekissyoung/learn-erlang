@@ -2,8 +2,7 @@
 -author("cky").
 -export([start/1,fridge/1,store/2,take/2]).
 
-start(FoodList) ->
-  spawn(?MODULE, fridge, [FoodList]).
+start(FoodList) -> spawn(?MODULE, fridge, [FoodList]).
 
 % process with status
 fridge(FoodList) ->

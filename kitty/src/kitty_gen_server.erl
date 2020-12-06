@@ -2,6 +2,7 @@
 -author("cky").
 -export([]).
 -compile(export_all).
+
 % gen_server 是一种行为
 % 本句代码含义是，gen_server 期望本模块实现 一组函数: init/1 handle_call ...
 -behavior(gen_server).
@@ -65,7 +66,8 @@ teminate(_Reason, Cats) ->
 
 % 用于代码升级
 % 参数 PreviousVersion State Extra
-code_change(_OldVsn, State, _Extra) -> {ok, State}.
+code_change(_OldVsn, State, _Extra)
+  -> {ok, State}.
 
 make_cat(Name, Col, Desc) ->
   #cat{name=Name, color=Col, description = Desc}.
